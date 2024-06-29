@@ -11,21 +11,19 @@ services:
 
     env_file:
       - ./.env
+    depends_on:
+      - cassandra
 
   cassandra:
-    image: bitnami/cassandra:latest
-    container_name: cassandra-container
+    image: cassandra:latest
+    container_name: cassandra_db
     ports:
-      - "${CQL_PORT}:${CQL_PORT}"
+      - "9042:9042"
     environment:
-      - CASSANDRA_USER=${CQL_USER}
-      - CASSANDRA_PASSWORD=${CQL_PASSWORD}
-      - CASSANDRA_CLUSTER_NAME='cloudinfra'
-      - CASSANDRA_SEEDS='cassandra_container'
-
-
+      CASSANDRA_CLUSTER_NAME: "Test Cluster"
+      CASSANDRA_SEEDS: "cassandra_db"
     volumes:
-      - ./cassandra-data:/var/lib/cassandra
+      - ./cassandra_data:/var/lib/cassandra
 
 
 volumes:
